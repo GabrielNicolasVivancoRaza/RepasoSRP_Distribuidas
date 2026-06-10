@@ -3,34 +3,70 @@ interface User {
     name: string;
 }
 
-// Esta clase viola el Principio de Responsabilidad Única (SRP)
-class UserBloc {
+class UserService {
 
-    loadUser( id: number ) {
-        // Simula la carga de un usuario
+    loadUser(id: number) {
         console.log('Cargando usuario con id:', id);
     }
 
-    saveUser( user: User ) {
-        // Simula el guardado en base de datos
-        console.log('Guardando en base de datos:', user );
-    }
-
-    notifyUser() {
-        // Simula el envío de notificaciones
-        console.log('Enviando correo a los usuarios');
-    }
-
-    onAddSubscription( subscriptionId: number ) {
-        // Simula la gestión de suscripciones
-        console.log('Agregando suscripción:', subscriptionId );
+    saveUser(user: User) {
+        console.log('Guardando en base de datos:', user);
     }
 
 }
 
-const userBloc = new UserBloc();
+class Mailer {
+
+    sendEmail() {
+        console.log('Enviando correo a los usuarios');
+    }
+
+}
+
+class SubscriptionBloc {
+
+    onAddSubscription(subscriptionId: number) {
+        console.log('Agregando suscripción:', subscriptionId);
+    }
+
+}
+
+class UserBloc {
+
+    constructor(
+        private userService: UserService,
+        private mailer: Mailer
+    ) {}
+
+    loadUser(id: number) {
+        this.userService.loadUser(id);
+    }
+
+    saveUser(user: User) {
+        this.userService.saveUser(user);
+    }
+
+    notifyUser() {
+        this.mailer.sendEmail();
+    }
+
+}
+
+const userService = new UserService();
+const mailer = new Mailer();
+
+const userBloc = new UserBloc(
+    userService,
+    mailer
+);
+
+const subscriptionBloc = new SubscriptionBloc();
 
 userBloc.loadUser(10);
-userBloc.saveUser({ id: 10, name: 'Fernando' });
+userBloc.saveUser({
+    id: 10,
+    name: 'Fernando'
+});
+
 userBloc.notifyUser();
-userBloc.onAddSubscription(1234);
+subscriptionBloc.onAddSubscription(1234);
