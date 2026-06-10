@@ -15,6 +15,14 @@ class UserService {
 
 }
 
+class Mailer {
+
+    sendEmail() {
+        console.log('Enviando correo a los usuarios');
+    }
+
+}
+
 class SubscriptionBloc {
 
     onAddSubscription(subscriptionId: number) {
@@ -24,9 +32,5 @@ class SubscriptionBloc {
 }
 
 class UserBloc {
-
-    notifyUser() {
-        console.log('Enviando correo a los usuarios');
-    }
 
 }
